@@ -1,5 +1,12 @@
+import sys
+import os
 import unittest
 import mongomock
+
+# Ensure the parent directory (backend/) is in the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Import the log_conversation function from the models
 from models.conversation import log_conversation
 
 class TestMongoDB(unittest.TestCase):

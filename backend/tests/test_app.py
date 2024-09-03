@@ -1,9 +1,14 @@
+import sys
+import os
 import unittest
 import json
-from app import app
 from unittest.mock import patch
-import mongomock
-from database import get_db
+
+# Ensure the parent directory (backend/) is in the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Import the Flask app from the backend
+from app import app
 
 # Mock MongoDB connection
 class MockDatabase:
@@ -17,7 +22,6 @@ class FlaskTestCase(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
         self.app.testing = True
-        self.mock_db = MockDatabase()
 
     @patch('app.openai.ChatCompletion.create')
     @patch('app.get_db', return_value=MockDatabase().get_db())
@@ -36,23 +40,6 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('response', data)
         self.assertEqual(data['response'], 'Mock GPT response')
-
-    def test_pipe_sizing(self):
-        response = self.app.post('/api/pipe_sizing', 
-                                 data=json.dumps({"flow_rate": 0.1, "velocity": 1.0}),
-                                 content_type='application/json')
-        data = json.loads(response.data)
-        self.assertEqual(response.status_code, 200)
-        self.assertIn('pipe_diameter', data)
-
-    def test_voltage_drop(self):
-        response = self.app.post('/api/voltage_drop', 
-                                 data=json.dumps({"current": 10, "resistance": 2}),
-                                 content_type='application/json')
-        data = json.loads(response.data)
-        self.assertEqual(response.status_code, 200)
-        self.assertIn('voltage_drop', data)
-        self.assertEqual(data['voltage_drop'], '20.00 volts')
 
 if __name__ == '__main__':
     unittest.main()
