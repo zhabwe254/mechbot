@@ -1,0 +1,24 @@
+{
+  "name": "mechbot",
+  "version": "1.0.0",
+  "description": "Chatbot for mechanical engineers in the construction industry",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "mocha"
+  },
+  "author": "Gideon Habwe",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^16.4.5",
+    "openai": "^3.3.0",
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "sinon": "^15.0.1"
+  }
+}
